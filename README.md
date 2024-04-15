@@ -32,23 +32,29 @@ This is like your stream key on YouTube or Twitch -
 who figure out that you used this guide can use your instance to stream,
 potentially costing you money.
 
+---
+
 # Steps to set up
 
-First, install and set up `flyctl` - https://fly.io/docs/hands-on/install-flyctl/
+- First, install and set up `flyctl` - https://fly.io/docs/hands-on/install-flyctl/
 
-Now, sign up/in https://fly.io/docs/hands-on/sign-up-sign-in/
+- Now, sign up/in https://fly.io/docs/hands-on/sign-up-sign-in/
 
-Finally, launch this app
+- Finally, launch this app
 
 `flyctl launch --ha=false`
 
 (the `--ha=false` will prevent fly.io from launching multiple machines)
 
-Answer `Would you like to copy its configuration to the new app?` with `Yes`
+---
 
-Answer `Do you want to tweak these settings before proceeding?` with `No`
+- Answer `Would you like to copy its configuration to the new app?` with `Yes`
 
-Answer `Would you like to allocate dedicated ipv4 and ipv6 addresses now?` with `Yes`
+- Answer `Do you want to tweak these settings before proceeding?` with `No`
+
+- Answer `Would you like to allocate dedicated ipv4 and ipv6 addresses now?` with `Yes`
+
+---
 
 Eventually you should see a line like this
 
@@ -58,6 +64,8 @@ Allocated dedicated ipv4: 169.155.59.256
 
 Save the `ipv4` address
 
+---
+
 # Configuring OBS
 
 Open OBS and go to `Settings -> Stream`. Select `Custom` and put in this info
@@ -66,12 +74,20 @@ Server: `rtmp://[the IP address from before]/vrc-fly` (replace `vrc-fly` with yo
 
 Stream Key: `vrc`
 
+## Recommended settings
+
+ABR, h264/x264 3000 or less Mbps, 1s keyframe interval, use B-frames, main profile
+
+---
+
 # Opening in VRChat
 
 In the video player URL, put in `http://[the IP address from before]`. Note that
 it **IS NOT** `https`. SSL would increase complexity, so this guide
 intentionally only uses `http`. If you're moderately technical (and with the
 help of fly.io docs), you could set up SSL fairly easily.
+
+---
 
 # (Optional) DNS
 
@@ -82,9 +98,13 @@ an A record with the value for the record being the IP address from fly.io.
 https://noip.com is one dynamic DNS provider - they let you choose the suffix
 among domains they own such as `ddns.net` and `hopto.org`.
 
+---
+
 # Removing all resources
 
 `flyctl apps destroy vr-stream`
+
+---
 
 # Is this really free?
 
