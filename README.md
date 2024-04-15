@@ -1,7 +1,7 @@
 # fly-stream
 
 This repo is intended to allow you to spin up a fly.io machine that allows you
-to stream to it (via OBS for example) and share the stream in-game **for free**
+to stream to it (via OBS for example) and share the stream in VRChat **for free**
 
 # IMPORTANT: DO THIS FIRST
 
