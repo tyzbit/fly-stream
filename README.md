@@ -63,6 +63,7 @@ Save the `ipv4` address
 Open OBS and go to `Settings -> Stream`. Select `Custom` and put in this info
 
 Server: `rtmp://[the IP address from before]/vrc-fly` (replace `vrc-fly` with your UUID)
+
 Stream Key: `vrc`
 
 # Opening in VRChat
