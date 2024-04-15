@@ -53,7 +53,7 @@ Answer `Would you like to allocate dedicated ipv4 and ipv6 addresses now?` with 
 Eventually you should see a line like this
 
 ```
-Allocated dedicated ipv4: 169.155.59.246
+Allocated dedicated ipv4: 169.155.59.256
 ```
 
 Save the `ipv4` address
@@ -62,7 +62,7 @@ Save the `ipv4` address
 
 Open OBS and go to `Settings -> Stream`. Select `Custom` and put in this info
 
-Server: `rtmp://169.155.59.246/vrc-fly` (replace `vrc-fly` with your UUID)
+Server: `rtmp://[the IP address from before]/vrc-fly` (replace `vrc-fly` with your UUID)
 Stream Key: `vrc`
 
 # Opening in VRChat
