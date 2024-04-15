@@ -28,7 +28,7 @@ Like this:
 ```
 
 This is like your stream key on YouTube or Twitch -
-**keep it secret and do not share it!**. If you do not change it, other people
+**keep it secret and do not share it!** If you do not change it, other people
 who figure out that you used this guide can use your instance to stream,
 potentially costing you money.
 
@@ -64,6 +64,13 @@ Open OBS and go to `Settings -> Stream`. Select `Custom` and put in this info
 
 Server: `rtmp://169.155.59.246/vrc-fly` (replace `vrc-fly` with your UUID)
 Stream Key: `vrc`
+
+# Opening in VRChat
+
+In the video player URL, put in `http://[the IP address from before]`. Note that
+it **IS NOT** `https`. SSL would increase complexity, so this guide
+intentionally only uses `http`. If you're moderately technical (and with the
+help of fly.io docs), you could set up SSL fairly easily.
 
 # Removing all resources
 
