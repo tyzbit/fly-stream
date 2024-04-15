@@ -1,0 +1,30 @@
+app = 'vr-stream'
+primary_region = 'iad'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+  [build.args]
+    ENDPOINT = 'vrc-fly'
+
+[deploy]
+  strategy = 'immediate'
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 80
+
+[[services.ports]]
+    port = 80
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 1935
+
+[[services.ports]]
+    port = 1935
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  memory = '256mb'
+  cpus = 1
