@@ -73,6 +73,15 @@ it **IS NOT** `https`. SSL would increase complexity, so this guide
 intentionally only uses `http`. If you're moderately technical (and with the
 help of fly.io docs), you could set up SSL fairly easily.
 
+# (Optional) DNS
+
+If you own a domain or have an account at a Dynamic DNS provider, you can
+set up a human-readable domain name so you don't have to type in the IP address
+every time. While this is out of the scope of this guide, you'll want to create
+an A record with the value for the record being the IP address from fly.io.
+https://noip.com is one dynamic DNS provider - they let you choose the suffix
+among domains they own such as `ddns.net` and `hopto.org`.
+
 # Removing all resources
 
 `flyctl apps destroy vr-stream`
