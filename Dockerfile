@@ -1,6 +1,6 @@
-FROM tiangolo/nginx-rtmp:latest-2024-03-25
-ARG ENDPOINT
-ENV ENDPOINT=${ENDPOINT}
+FROM bluenviron/mediamtx:latest-ffmpeg
+ARG STREAMPASS
+ENV STREAMPASS=${STREAMPASS}
 
-ADD nginx.conf /etc/nginx/nginx.conf
-RUN sed -i "s/ENDPOINT/${ENDPOINT}/g" /etc/nginx/nginx.conf
+ADD mediamtx.yml /mediamtx.yml
+RUN sed -i "s/STREAMPASS/${STREAMPASS}/g" /mediamtx.yml

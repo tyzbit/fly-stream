@@ -5,17 +5,17 @@ primary_region = 'iad'
   dockerfile = 'Dockerfile'
 
   [build.args]
-    ENDPOINT = 'vrc-fly'
+    STREAMPASS = 'vrc-fly' # CHANGE THIS!!!
 
 [deploy]
   strategy = 'immediate'
 
 [[services]]
   protocol = 'tcp'
-  internal_port = 80
+  internal_port = 554
 
 [[services.ports]]
-    port = 80
+    port = 554
 
 [[services]]
   protocol = 'tcp'

@@ -17,14 +17,14 @@ Now take your UUID and edit `fly.toml` and replace this line:
 
 ```toml
 [build.args]
-  ENDPOINT = "vrc-fly" # CHANGE THIS!!!
+  STREAMPASS = "vrc-fly" # CHANGE THIS!!!
 ```
 
 Like this:
 
 ```toml
 [build.args]
-  ENDPOINT = "4eb62a63-8601-437c-9721-7572aced5d71"
+  STREAMPASS = "4eb62a63-8601-437c-9721-7572aced5d71"
 ```
 
 This is like your stream key on YouTube or Twitch -
@@ -70,9 +70,9 @@ Save the `ipv4` address
 
 Open OBS and go to `Settings -> Stream`. Select `Custom` and put in this info
 
-Server: `rtmp://[the IP address from before]/vrc-fly` (replace `vrc-fly` with your UUID)
+Server: `rtmp://[the IP address from before]`
 
-Stream Key: `vrc`
+Stream Key: `live?user=stream&pass=vrc-fly` (replace `vrc-fly` with your UUID)
 
 ## Recommended settings
 
@@ -82,10 +82,7 @@ ABR, h264/x264 3000 or less Mbps, 1s keyframe interval, use B-frames, main profi
 
 # Opening in VRChat
 
-In the video player URL, put in `http://[the IP address from before]`. Note that
-it **IS NOT** `https`. SSL would increase complexity, so this guide
-intentionally only uses `http`. If you're moderately technical (and with the
-help of fly.io docs), you could set up SSL fairly easily.
+In the video player URL, put in `rtspt://[the IP address from before]/live`
 
 ---
 
