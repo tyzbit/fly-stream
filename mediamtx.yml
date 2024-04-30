@@ -8,212 +8,51 @@
 logLevel: info
 # Destinations of log messages; available values are "stdout", "file" and "syslog".
 logDestinations: [stdout]
-# If "file" is in logDestinations, this is the file which will receive the logs.
-logFile: mediamtx.log
 
-# Timeout of read operations.
-readTimeout: 10s
-# Timeout of write operations.
-writeTimeout: 10s
-# Size of the queue of outgoing packets.
-# A higher value allows to increase throughput, a lower value allows to save RAM.
-writeQueueSize: 2048
-# Maximum size of outgoing UDP packets.
-# This can be decreased to avoid fragmentation on networks with a low UDP MTU.
-udpMaxPayloadSize: 1472
-
-# Command to run when a client connects to the server.
-# This is terminated with SIGINT when a client disconnects from the server.
-# The following environment variables are available:
-# * RTSP_PORT: RTSP server port
-# * MTX_CONN_TYPE: connection type
-# * MTX_CONN_ID: connection ID
-runOnConnect:
-# Restart the command if it exits.
-runOnConnectRestart: no
-# Command to run when a client disconnects from the server.
-# Environment variables are the same of runOnConnect.
-runOnDisconnect:
-
-###############################################
-# Global settings -> Authentication
-
-# Authentication method. Available values are:
-# * internal: users are stored in the configuration file
-# * http: an external HTTP URL is contacted to perform authentication
-# * jwt: an external identity server provides authentication through JWTs
 authMethod: internal
 
-# Internal authentication.
-# list of users.
 authInternalUsers:
   - user: stream
-    # Password. Not used in case of 'any' user.
     pass: STREAMPASS
-    # IPs or networks allowed to use this user. An empty list means any IP.
     ips: []
-    # List of permissions.
     permissions:
-      # Available actions are: publish, read, playback, api, metrics, pprof.
       - action: publish
-        # Paths can be set to further restrict access to a specific path.
-        # An empty path means any path.
-        # Regular expressions can be used by using a tilde as prefix.
         path:
       - action: read
         path:
       - action: playback
         path:
   - user: any
-    # Password. Not used in case of 'any' user.
     pass:
-    # IPs or networks allowed to use this user. An empty list means any IP.
     ips: []
-    # List of permissions.
     permissions:
-      # Available actions are: publish, read, playback, api, metrics, pprof.
       - action: read
         path:
       - action: playback
         path:
 
-  #   # Default administrator.
-  #   # This allows to use API, metrics and PPROF without authentication,
-  #   # if the IP is localhost.
-  # - user: any
-  #   pass:
-  #   ips: ["127.0.0.1", "::1"]
-  #   permissions:
-  #     - action: api
-  #     - action: metrics
-  #     - action: pprof
-
-rtsp: no
 rtmp: no
 hls: no
 srt: no
+webrtc: no
 
-###############################################
-# Global settings -> WebRTC server
-# Enable publishing and reading streams with the WebRTC protocol.
-webrtc: yes
-# Address of the WebRTC HTTP listener.
-webrtcAddress: :80
-# Enable TLS/HTTPS on the WebRTC server.
-webrtcEncryption: no
-# Path to the server key.
-# This can be generated with:
-# openssl genrsa -out server.key 2048
-# openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
-webrtcServerKey: server.key
-# Path to the server certificate.
-webrtcServerCert: server.crt
-# Value of the Access-Control-Allow-Origin header provided in every HTTP response.
-# This allows to play the WebRTC stream from an external website.
-webrtcAllowOrigin: "*"
-# List of IPs or CIDRs of proxies placed before the WebRTC server.
-# If the server receives a request from one of these entries, IP in logs
-# will be taken from the X-Forwarded-For header.
-webrtcTrustedProxies: []
-# Address of a local UDP listener that will receive connections.
-# Use a blank string to disable.
-webrtcLocalUDPAddress: fly-global-services:8189
-# Address of a local TCP listener that will receive connections.
-# This is disabled by default since TCP is less efficient than UDP and
-# introduces a progressive delay when network is congested.
-webrtcLocalTCPAddress: :8189
-# WebRTC clients need to know the IP of the server.
-# Gather IPs from interfaces and send them to clients.
-webrtcIPsFromInterfaces: no
-# List of interfaces whose IPs will be sent to clients.
-# An empty value means to use all available interfaces.
-webrtcIPsFromInterfacesList: []
-# List of additional hosts or IPs to send to clients.
-webrtcAdditionalHosts: ["fly.tyz.gg"]
-# ICE servers. Needed only when local listeners can't be reached by clients.
-# STUN servers allows to obtain and share the public IP of the server.
-# TURN/TURNS servers forces all traffic through them.
-webrtcICEServers2:
-  []
-  # - url: stun:stun.stunprotocol.org:3478
-  # - url: stun:stun.l.google.com:19302
-  # if user is "AUTH_SECRET", then authentication is secret based.
-  # the secret must be inserted into the password field.
-  # username: ''
-  # password: ''
-  # clientOnly: false
+rtsp: yes
+protocols: [tcp]
+encryption: "no"
+rtspAddress: :554
+rtspAuthMethods: [basic]
 
-###############################################
-# Default path settings
-
-# Settings in "pathDefaults" are applied anywhere,
-# unless they are overridden in "paths".
 pathDefaults:
-  ###############################################
-  # Default path settings -> General
-
-  # Source of the stream. This can be:
-  # * publisher -> the stream is provided by a RTSP, RTMP, WebRTC or SRT client
-  # * rtsp://existing-url -> the stream is pulled from another RTSP server / camera
-  # * rtsps://existing-url -> the stream is pulled from another RTSP server / camera with RTSPS
-  # * rtmp://existing-url -> the stream is pulled from another RTMP server / camera
-  # * rtmps://existing-url -> the stream is pulled from another RTMP server / camera with RTMPS
-  # * http://existing-url/stream.m3u8 -> the stream is pulled from another HLS server / camera
-  # * https://existing-url/stream.m3u8 -> the stream is pulled from another HLS server / camera with HTTPS
-  # * udp://ip:port -> the stream is pulled with UDP, by listening on the specified IP and port
-  # * srt://existing-url -> the stream is pulled from another SRT server / camera
-  # * whep://existing-url -> the stream is pulled from another WebRTC server / camera
-  # * wheps://existing-url -> the stream is pulled from another WebRTC server / camera with HTTPS
-  # * redirect -> the stream is provided by another path or server
-  # * rpiCamera -> the stream is provided by a Raspberry Pi Camera
-  # If path name is a regular expression, $G1, G2, etc will be replaced
-  # with regular expression groups.
   source: publisher
-  # If the source is a URL, and the source certificate is self-signed
-  # or invalid, you can provide the fingerprint of the certificate in order to
-  # validate it anyway. It can be obtained by running:
-  # openssl s_client -connect source_ip:source_port </dev/null 2>/dev/null | sed -n '/BEGIN/,/END/p' > server.crt
-  # openssl x509 -in server.crt -noout -fingerprint -sha256 | cut -d "=" -f2 | tr -d ':'
   sourceFingerprint:
-  # If the source is a URL, it will be pulled only when at least
-  # one reader is connected, saving bandwidth.
   sourceOnDemand: no
-  # If sourceOnDemand is "yes", readers will be put on hold until the source is
-  # ready or until this amount of time has passed.
   sourceOnDemandStartTimeout: 10s
-  # If sourceOnDemand is "yes", the source will be closed when there are no
-  # readers connected and this amount of time has passed.
   sourceOnDemandCloseAfter: 10s
-  # Maximum number of readers. Zero means no limit.
   maxReaders: 0
-  # SRT encryption passphrase require to read from this path
   srtReadPassphrase:
-  # If the stream is not available, redirect readers to this path.
-  # It can be can be a relative path (i.e. /otherstream) or an absolute RTSP URL.
   fallback:
-
-  ###############################################
-  # Default path settings -> Publisher source (when source is "publisher")
-
-  # Allow another client to disconnect the current publisher and publish in its place.
   overridePublisher: yes
-  # SRT encryption passphrase required to publish to this path
   srtPublishPassphrase:
 
-###############################################
-# Path settings
-
-# Settings in "paths" are applied to specific paths, and the map key
-# is the name of the path.
-# Any setting in "pathDefaults" can be overridden here.
-# It's possible to use regular expressions by using a tilde as prefix,
-# for example "~^(test1|test2)$" will match both "test1" and "test2",
-# for example "~^prefix" will match all paths that start with "prefix".
 paths:
-  # example:
-  # my_camera:
-  #   source: rtsp://my_camera
-
-  # Settings under path "all_others" are applied to all paths that
-  # do not match another entry.
   all_others:

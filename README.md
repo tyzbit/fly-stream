@@ -2,10 +2,7 @@
 
 This repo is intended to allow you to spin up a fly.io machine that allows you
 to stream to it (via OBS for example) and share the stream in VRChat **for free**
-
-## NOT WORKING AT THE MOMENT
-
-TODO: troubleshoot connectivity issues with WebRTC UDP
+and with _very low latency_
 
 # IMPORTANT: DO THIS FIRST
 
@@ -48,7 +45,8 @@ potentially costing you money.
 
 `flyctl launch --ha=false`
 
-(the `--ha=false` will prevent fly.io from launching multiple machines)
+(the `--ha=false` will prevent fly.io from launching multiple machines - we only
+need one)
 
 ---
 
@@ -66,27 +64,42 @@ Eventually you should see a line like this
 Allocated dedicated ipv4: 169.155.59.256
 ```
 
-Save the `ipv4` address
+Take note of the address after `ipv4:`, you'll need this later
 
 ---
 
 # Configuring OBS
 
-Open OBS and go to `Settings -> Stream`. Select `WHIP` and put in this info
+Open OBS and go to `Settings -> Output`. then click ->`Recording`<- (we need to use
+this tab because we're using some custom functionality)
 
-Server: `http://stream:vrc-fly@[the IP address from before]/live/whip`
-(replace `vrc-fly` with your UUID)
+- File path or URL: `rtsp://stream:vrc-fly@[the IP address from before]/live`
+  (replace `vrc-fly` with your UUID)
 
-## Recommended settings
+- Container Format: `rtsp`
 
-ABR, h264/x264 3000 or less Mbps, 1s keyframe interval, use B-frames, main profile
-Libopus
+- Video Bitrate: Up to you, but I recommend `2500` or `3000` for 1080p. The higher
+  the bitrate, the quicker you may use up the free quota
+
+- Keyframe interval (frames): `30`
+
+- Video Encoder: `mpeg4`
+
+- Video Encoder Settings: `br=0`
+
+- Audio Bitrate: `128 Kbps` (you can increase this but the difference may not be
+  noticeable)
+
+- Audio Encoder: `aac`
+
+When you stream, click `Start Recording`, **not Start Streaming**
 
 ---
 
 # Opening in VRChat
 
-In the video player URL, put in `http://[the IP address from before]/live`
+In the video player URL, put in `rtspt://[the IP address from before]/live`.
+The delay I had was less than a half a second.
 
 ---
 
@@ -95,9 +108,9 @@ In the video player URL, put in `http://[the IP address from before]/live`
 If you own a domain or have an account at a Dynamic DNS provider, you can
 set up a human-readable domain name so you don't have to type in the IP address
 every time. While this is out of the scope of this guide, you'll want to create
-an A record with the value for the record being the IP address from fly.io.
-https://noip.com is one dynamic DNS provider - they let you choose the suffix
-among domains they own such as `ddns.net` and `hopto.org`.
+a DNS A record with the value for the record being the IP address from fly.io.
+https://noip.com is one free dynamic DNS provider - they let you choose the
+suffix among domains they own such as `ddns.net` and `hopto.org`.
 
 ---
 
