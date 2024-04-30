@@ -17,7 +17,7 @@ readTimeout: 10s
 writeTimeout: 10s
 # Size of the queue of outgoing packets.
 # A higher value allows to increase throughput, a lower value allows to save RAM.
-writeQueueSize: 512
+writeQueueSize: 2048
 # Maximum size of outgoing UDP packets.
 # This can be decreased to avoid fragmentation on networks with a low UDP MTU.
 udpMaxPayloadSize: 1472
@@ -88,65 +88,60 @@ authInternalUsers:
   #     - action: metrics
   #     - action: pprof
 
-###############################################
-# Global settings -> RTSP server
+rtsp: no
+rtmp: no
+hls: no
+srt: no
 
-# Enable publishing and reading streams with the RTSP protocol.
-rtsp: yes
-# List of enabled RTSP transport protocols.
-# UDP is the most performant, but doesn't work when there's a NAT/firewall between
-# server and clients, and doesn't support encryption.
-# UDP-multicast allows to save bandwidth when clients are all in the same LAN.
-# TCP is the most versatile, and does support encryption.
-# The handshake is always performed with TCP.
-protocols: [udp, multicast, tcp]
-# Encrypt handshakes and TCP streams with TLS (RTSPS).
-# Available values are "no", "strict", "optional".
-encryption: "no"
-# Address of the TCP/RTSP listener. This is needed only when encryption is "no" or "optional".
-rtspAddress: :554
-# Address of the TCP/TLS/RTSPS listener. This is needed only when encryption is "strict" or "optional".
-rtspsAddress: :8322
-# Address of the UDP/RTP listener. This is needed only when "udp" is in protocols.
-rtpAddress: :8000
-# Address of the UDP/RTCP listener. This is needed only when "udp" is in protocols.
-rtcpAddress: :8001
-# IP range of all UDP-multicast listeners. This is needed only when "multicast" is in protocols.
-multicastIPRange: 224.1.0.0/16
-# Port of all UDP-multicast/RTP listeners. This is needed only when "multicast" is in protocols.
-multicastRTPPort: 8002
-# Port of all UDP-multicast/RTCP listeners. This is needed only when "multicast" is in protocols.
-multicastRTCPPort: 8003
-# Path to the server key. This is needed only when encryption is "strict" or "optional".
+###############################################
+# Global settings -> WebRTC server
+# Enable publishing and reading streams with the WebRTC protocol.
+webrtc: yes
+# Address of the WebRTC HTTP listener.
+webrtcAddress: :80
+# Enable TLS/HTTPS on the WebRTC server.
+webrtcEncryption: no
+# Path to the server key.
 # This can be generated with:
 # openssl genrsa -out server.key 2048
 # openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
-serverKey: server.key
-# Path to the server certificate. This is needed only when encryption is "strict" or "optional".
-serverCert: server.crt
-# Authentication methods. Available are "basic" and "digest".
-# "digest" doesn't provide any additional security and is available for compatibility only.
-rtspAuthMethods: [basic]
-
-###############################################
-# Global settings -> RTMP server
-
-# Enable publishing and reading streams with the RTMP protocol.
-rtmp: yes
-# Address of the RTMP listener. This is needed only when encryption is "no" or "optional".
-rtmpAddress: :1935
-# Encrypt connections with TLS (RTMPS).
-# Available values are "no", "strict", "optional".
-rtmpEncryption: "no"
-# Address of the RTMPS listener. This is needed only when encryption is "strict" or "optional".
-rtmpsAddress: :1936
-# Path to the server key. This is needed only when encryption is "strict" or "optional".
-# This can be generated with:
-# openssl genrsa -out server.key 2048
-# openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
-rtmpServerKey: server.key
-# Path to the server certificate. This is needed only when encryption is "strict" or "optional".
-rtmpServerCert: server.crt
+webrtcServerKey: server.key
+# Path to the server certificate.
+webrtcServerCert: server.crt
+# Value of the Access-Control-Allow-Origin header provided in every HTTP response.
+# This allows to play the WebRTC stream from an external website.
+webrtcAllowOrigin: "*"
+# List of IPs or CIDRs of proxies placed before the WebRTC server.
+# If the server receives a request from one of these entries, IP in logs
+# will be taken from the X-Forwarded-For header.
+webrtcTrustedProxies: []
+# Address of a local UDP listener that will receive connections.
+# Use a blank string to disable.
+webrtcLocalUDPAddress: fly-global-services:8189
+# Address of a local TCP listener that will receive connections.
+# This is disabled by default since TCP is less efficient than UDP and
+# introduces a progressive delay when network is congested.
+webrtcLocalTCPAddress: :8189
+# WebRTC clients need to know the IP of the server.
+# Gather IPs from interfaces and send them to clients.
+webrtcIPsFromInterfaces: no
+# List of interfaces whose IPs will be sent to clients.
+# An empty value means to use all available interfaces.
+webrtcIPsFromInterfacesList: []
+# List of additional hosts or IPs to send to clients.
+webrtcAdditionalHosts: ["fly.tyz.gg"]
+# ICE servers. Needed only when local listeners can't be reached by clients.
+# STUN servers allows to obtain and share the public IP of the server.
+# TURN/TURNS servers forces all traffic through them.
+webrtcICEServers2:
+  []
+  # - url: stun:stun.stunprotocol.org:3478
+  # - url: stun:stun.l.google.com:19302
+  # if user is "AUTH_SECRET", then authentication is secret based.
+  # the secret must be inserted into the password field.
+  # username: ''
+  # password: ''
+  # clientOnly: false
 
 ###############################################
 # Default path settings

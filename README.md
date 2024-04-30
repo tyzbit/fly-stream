@@ -3,6 +3,10 @@
 This repo is intended to allow you to spin up a fly.io machine that allows you
 to stream to it (via OBS for example) and share the stream in VRChat **for free**
 
+## NOT WORKING AT THE MOMENT
+
+TODO: troubleshoot connectivity issues with WebRTC UDP
+
 # IMPORTANT: DO THIS FIRST
 
 Generate a UUID, if you're on Linux or Mac, this command should work fine in a
@@ -68,21 +72,21 @@ Save the `ipv4` address
 
 # Configuring OBS
 
-Open OBS and go to `Settings -> Stream`. Select `Custom` and put in this info
+Open OBS and go to `Settings -> Stream`. Select `WHIP` and put in this info
 
-Server: `rtmp://[the IP address from before]`
-
-Stream Key: `live?user=stream&pass=vrc-fly` (replace `vrc-fly` with your UUID)
+Server: `http://stream:vrc-fly@[the IP address from before]/live/whip`
+(replace `vrc-fly` with your UUID)
 
 ## Recommended settings
 
 ABR, h264/x264 3000 or less Mbps, 1s keyframe interval, use B-frames, main profile
+Libopus
 
 ---
 
 # Opening in VRChat
 
-In the video player URL, put in `rtspt://[the IP address from before]/live`
+In the video player URL, put in `http://[the IP address from before]/live`
 
 ---
 

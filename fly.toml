@@ -12,24 +12,24 @@ primary_region = 'iad'
 
 [[services]]
   protocol = 'tcp'
-  internal_port = 554
+  internal_port = 80
 
   [[services.ports]]
-    port = 554
-
-[[services]]
-  protocol = 'udp'
-  internal_port = 554
-
-  [[services.ports]]
-    port = 554
+    port = 80
 
 [[services]]
   protocol = 'tcp'
-  internal_port = 1935
+  internal_port = 8189
 
   [[services.ports]]
-    port = 1935
+    port = 8189
+
+[[services]]
+  protocol = 'udp'
+  internal_port = 8189
+
+  [[services.ports]]
+    port = 8189
 
 [[vm]]
   size = 'shared-cpu-1x'
