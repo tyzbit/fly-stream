@@ -1,8 +1,8 @@
 # fly-stream
 
 This repo is intended to allow you to spin up a fly.io machine that allows you
-to stream to it (via OBS for example) and share the stream in VRChat **for free**
-and with _very low latency_
+to stream to it (via OBS for example) and share the stream in VRChat with
+_very low latency_
 
 # IMPORTANT: DO THIS FIRST
 
@@ -117,18 +117,3 @@ suffix among domains they own such as `ddns.net` and `hopto.org`.
 # Removing all resources
 
 `flyctl apps destroy vr-stream`
-
----
-
-# Is this really free?
-
-You can use it a moderate amount and it should be free. Fly.io doesn't charge
-if your bill is below $5/mo and you get 160GB of outbound traffic. Doing some
-back-of-the-napkin math, if you streamed at 3000 Mpbs that would be
-4 hours of streaming every day of the month **for one viewer**. Every additional
-viewer would halve that amount of time. In addition, at $0.02 per GB, you can
-use 250GB of _additional_ data before you use more than $5/mo and fly.io would
-charge you.
-
-Unless you stream movies to a lot of people every day, I think this will still
-be no cost for moderate usage.
