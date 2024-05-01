@@ -79,7 +79,7 @@ this tab because we're using some custom functionality)
 - Container Format: `rtsp`
 
 - Video Bitrate: Up to you, but I recommend `2500` or `3000` for 1080p. The higher
-  the bitrate, the quicker you may use up the free quota
+  the bitrate, the more it will cost (but data is quite inexpensive).
 
 - Keyframe interval (frames): `30`
 
